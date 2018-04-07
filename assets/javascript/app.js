@@ -1,44 +1,75 @@
-$("button").on("click", function() {
-    // Grabbing and storing the data-animal property value from the button
-    var music = $(this).attr("data-music");
+let bandNames = ["incubus", "greenday", "red hot chili peppers"]
 
-    // Constructing a queryURL using the animal name
-    var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-      music + "&api_key=dc6zaTOxFJmzC&limit=10";
+$(".search").on("click", function () {
+    let searchTerm = $("#user-search").val().trim();
+    bandNames.push(searchTerm);
+    renderButtons();
+    // console.log(bandNames);
 
+    // Constructing a queryURL using the music name
+    let queryURL = `https://api.giphy.com/v1/gifs/search?q=${searchTerm}&api_key=dc6zaTOxFJmzC&limit=10`;
+    fetchGiphy(queryURL);
+
+});
+
+$(document).on("click", ".music-btn", function (e) {
+
+    let dataName = $(e.target).attr("data-name");
+    let queryURL = `https://api.giphy.com/v1/gifs/search?q=${dataName}&api_key=dc6zaTOxFJmzC&limit=10`;
+    fetchGiphy(queryURL);
+});
+
+$(document).on("click", ".gif-image", function (e) {
+    console.log(e.target);
+    let currentState = $(e.target).attr("currentState");
+    let animatedState = $(e.target).attr("animatedState");
+    let stillState = $(e.target).attr("stillState");
+    if (currentState === stillState) {
+        $(e.target).attr("src", animatedState);
+        $(e.target).attr("currentState", animatedState);
+    } else {
+        $(e.target).attr("src", stillState);
+        $(e.target).attr("currentState", stillState);
+    }
+
+});
+
+function renderButtons() {
+    $("#buttonStorage").empty();
+    for (let i = 0; i < bandNames.length; i++) {
+        let buttonCreater = $("<button>");
+        buttonCreater.addClass("music-btn btn btn-secondary my-1 mx-1");
+        // Adding a data-attribute
+        buttonCreater.attr("data-name", bandNames[i]);
+        // Providing the initial button text
+        buttonCreater.text(bandNames[i]);
+        $("#buttonStorage").append(buttonCreater);
+    }
+}
+
+function fetchGiphy(queryURL) {
     // Performing an AJAX request with the queryURL
     $.ajax({
-      url: queryURL,
-      method: "GET"
-    })
-      // After data comes back from the request
-      .then(function(response) {
-        console.log(queryURL);
+            url: queryURL,
+            method: "GET"
+        })
+        // After data comes back from the request
+        .then(function (response) {
+            console.log(response.data);
+            $("#gifs-go-here").html("");
+            response.data.forEach(datum => {
+                let stillImgURL = datum.images.downsized_still.url;
+                let animatedImgURL = datum.images.downsized.url;
+                let imageDiv = $("<div class = 'col-md-8'>").text(datum.rating)
+                let image = $("<img class = 'img-fluid mt-2 gif-image'>")
+                console.log(datum.rating);
+                image.attr("src", stillImgURL);
+                image.attr("currentState", $(image).attr("src"));
+                image.attr("animatedState", animatedImgURL);
+                image.attr("stillState", stillImgURL);
+                $(imageDiv).prepend(image);
+                $("#gifs-go-here").prepend(imageDiv);
+            });
+        });
 
-        console.log(response);
-        // storing the data from the AJAX request in the results variable
-        var results = response.data;
-
-        // Looping through each result item
-        for (var i = 0; i < results.length; i++) {
-
-          // Creating and storing a div tag
-          var musicDiv = $("<div>");
-
-          // Creating a paragraph tag with the result item's rating
-          var p = $("<p>").text("Rating: " + results[i].rating);
-
-          // Creating and storing an image tag
-          var musicImage = $("<img>");
-          // Setting the src attribute of the image to a property pulled off the result item
-          musicImage.attr("src", results[i].images.fixed_height.url);
-
-          // Appending the paragraph and image tag to the animalDiv
-          musicDiv.append(p);
-          musicDiv.append(animalImage);
-
-          // Prependng the animalDiv to the HTML page in the "#gifs-appear-here" div
-          $("#gifs-appear-here").prepend(animalDiv);
-        }
-      });
-  });
+}
