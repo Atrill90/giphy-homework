@@ -1,4 +1,4 @@
-let bandNames = ["incubus", "greenday", "red hot chili peppers"]
+let bandNames = ["incubus", "eminem", "red hot chili peppers"]
 
 starterButtons(bandNames);
 
@@ -62,7 +62,7 @@ function fetchGiphy(queryURL) {
                 let animatedImgURL = datum.images.downsized.url;
                 let imageDiv = $("<div class = 'col-md-8'>")
                 let rating = $("<p class = 'ratingTag'>")
-                rating.text(datum.rating)
+                rating.text( "rating " + datum.rating)
                 // .text(datum.rating)
                 let image = $("<img class = 'img-fluid mt-2 gif-image'>")
                 console.log(datum.rating);

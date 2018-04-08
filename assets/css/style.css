@@ -2,7 +2,8 @@
     text-align: center;
     font-weight: bold;
     background: slategrey;
-    color: white;
+    color: lightblue;
+    font-family: 'Ceviche One', cursive;
 }
 .gif-image{
     max-width: 400px;
@@ -10,4 +11,22 @@
 }
 body{
     background-color: lightblue;
+}
+.ratingTag{
+    font-size: 50px;
+    font-weight: bold;
+    color: honeydew;
+}
+h1{
+    font-size: 50px;
+}
+.lead{
+    font-size: 35px;
+}
+.display-4{
+    font-size: 75px;
+}
+#buttonStorage{
+    color:white;
+    font-weight: bold;
 }
