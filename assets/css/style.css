@@ -1,7 +1,13 @@
 .jumbotron{
     text-align: center;
     font-weight: bold;
+    background: slategrey;
+    color: white;
 }
-#gifs-go-here{
-    background-color:slategray;
+.gif-image{
+    max-width: 400px;
+    max-height: 400px;
+}
+body{
+    background-color: lightblue;
 }

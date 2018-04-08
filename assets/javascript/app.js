@@ -1,5 +1,7 @@
 let bandNames = ["incubus", "greenday", "red hot chili peppers"]
 
+starterButtons(bandNames);
+
 $(".search").on("click", function () {
     let searchTerm = $("#user-search").val().trim();
     bandNames.push(searchTerm);
@@ -55,12 +57,13 @@ function fetchGiphy(queryURL) {
         })
         // After data comes back from the request
         .then(function (response) {
-            console.log(response.data);
-            $("#gifs-go-here").html("");
             response.data.forEach(datum => {
                 let stillImgURL = datum.images.downsized_still.url;
                 let animatedImgURL = datum.images.downsized.url;
-                let imageDiv = $("<div class = 'col-md-8'>").text(datum.rating)
+                let imageDiv = $("<div class = 'col-md-8'>")
+                let rating = $("<p class = 'ratingTag'>")
+                rating.text(datum.rating)
+                // .text(datum.rating)
                 let image = $("<img class = 'img-fluid mt-2 gif-image'>")
                 console.log(datum.rating);
                 image.attr("src", stillImgURL);
@@ -69,7 +72,16 @@ function fetchGiphy(queryURL) {
                 image.attr("stillState", stillImgURL);
                 $(imageDiv).prepend(image);
                 $("#gifs-go-here").prepend(imageDiv);
+                imageDiv.append(rating);
             });
         });
+
+}
+
+function starterButtons(bandNamesArr) {
+    bandNames.forEach(bandName => {
+        renderButtons(bandName)
+    });
+
 
 }
